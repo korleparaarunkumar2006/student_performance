@@ -127,7 +127,40 @@
       .loader-footer {
         font-size: 0.78rem;
         color: #94A3B8;
-        font-weight: 600;
+      /* Global override for BaseWeb inputs and select controls */
+      div[data-baseweb="input"],
+      div[data-baseweb="base-input"],
+      [data-testid="stTextInput"] div[data-baseweb="input"],
+      [data-testid="stNumberInput"] div[data-baseweb="input"],
+      [data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+        background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        color: #0F172A !important;
+      }
+      input, textarea, select {
+        background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+        -webkit-text-fill-color: #0F172A !important;
+      }
+      [data-testid="stNumberInput"] button,
+      [data-testid="stNumberInputStepDown"],
+      [data-testid="stNumberInputStepUp"] {
+        background-color: #F1F5F9 !important;
+        background: #F1F5F9 !important;
+        color: #334155 !important;
+        border-left: 1px solid #CBD5E1 !important;
+      }
+      [data-testid="stNumberInput"] button svg {
+        fill: #334155 !important;
+      }
+      div[data-baseweb="select"] span, div[data-baseweb="select"] div {
+        color: #0F172A !important;
+        -webkit-text-fill-color: #0F172A !important;
+      }
+      div[data-baseweb="select"] svg {
+        fill: #475569 !important;
       }
     </style>
   </head>
@@ -146,9 +179,10 @@
       </div>
     </div>
 
-    <!-- Main Streamlit Application -->
+    <!-- Main Streamlit Application with explicit config.toml -->
     <streamlit-app src="./app.py">
       <app-file name="rules.py" url="./rules.py"></app-file>
+      <app-file name=".streamlit/config.toml" url="./.streamlit/config.toml"></app-file>
     </streamlit-app>
 
     <script>

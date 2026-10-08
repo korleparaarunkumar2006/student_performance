@@ -324,30 +324,123 @@ CUSTOM_CSS = """
         box-shadow: 0 6px 20px -2px rgba(37, 99, 235, 0.09) !important;
     }
 
-    /* Highlighted Form Controls (Inputs, Selectboxes, Number Inputs) */
-    div[data-baseweb="input"] {
-        border-radius: 9px !important;
-        border: 1.5px solid #CBD5E1 !important;
-        background-color: #F8FAFC !important;
-        transition: all 0.2s ease !important;
-    }
-    div[data-baseweb="input"]:focus-within {
-        border-color: #2563EB !important;
+    /* =========================================================================
+       COMPLETE FORCED LIGHT THEME: INPUTS, SELECTBOXES, NUMBER CONTROLS
+       ========================================================================= */
+
+    /* Force all text inputs, number inputs, selectboxes to bright white */
+    div[data-baseweb="input"],
+    div[data-baseweb="base-input"],
+    [data-testid="stTextInput"] div[data-baseweb="input"],
+    [data-testid="stNumberInput"] div[data-baseweb="input"],
+    [data-testid="stTextInput"] div[data-baseweb="base-input"],
+    [data-testid="stNumberInput"] div[data-baseweb="base-input"] {
         background-color: #FFFFFF !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
-    }
-    div[data-baseweb="select"] > div {
-        border-radius: 9px !important;
+        background: #FFFFFF !important;
         border: 1.5px solid #CBD5E1 !important;
-        background-color: #F8FAFC !important;
-        transition: all 0.2s ease !important;
+        border-radius: 9px !important;
+        color: #0F172A !important;
     }
+
+    /* Force inner input elements to white background & dark text */
+    input,
+    textarea,
+    div[data-baseweb="input"] input,
+    div[data-baseweb="base-input"] input,
+    [data-testid="stTextInput"] input,
+    [data-testid="stNumberInput"] input {
+        background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+        -webkit-text-fill-color: #0F172A !important;
+        caret-color: #1D4ED8 !important;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: #94A3B8 !important;
+        -webkit-text-fill-color: #94A3B8 !important;
+    }
+
+    /* Stepper buttons on number input (+ and -) */
+    [data-testid="stNumberInput"] button,
+    [data-testid="stNumberInputStepDown"],
+    [data-testid="stNumberInputStepUp"],
+    div[data-baseweb="input"] button {
+        background-color: #F1F5F9 !important;
+        background: #F1F5F9 !important;
+        color: #334155 !important;
+        border: none !important;
+        border-left: 1px solid #CBD5E1 !important;
+    }
+    [data-testid="stNumberInput"] button:hover {
+        background-color: #E2E8F0 !important;
+        color: #1D4ED8 !important;
+    }
+    [data-testid="stNumberInput"] button svg,
+    [data-testid="stNumberInput"] svg,
+    div[data-baseweb="input"] button svg {
+        fill: #334155 !important;
+        color: #334155 !important;
+    }
+
+    /* Selectboxes */
+    div[data-baseweb="select"],
+    div[data-baseweb="select"] > div,
+    [data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+        background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        border-radius: 9px !important;
+        color: #0F172A !important;
+    }
+    div[data-baseweb="select"] div,
+    div[data-baseweb="select"] span,
+    div[data-baseweb="select"] p,
+    [data-testid="stSelectbox"] div[data-baseweb="select"] * {
+        color: #0F172A !important;
+        -webkit-text-fill-color: #0F172A !important;
+    }
+    div[data-baseweb="select"] svg {
+        fill: #475569 !important;
+        color: #475569 !important;
+    }
+
+    /* Focus states */
+    div[data-baseweb="input"]:focus-within,
     div[data-baseweb="select"]:focus-within > div {
         border-color: #2563EB !important;
         background-color: #FFFFFF !important;
         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
     }
-    label[data-testid="stWidgetLabel"] p {
+
+    /* Dropdown menu items */
+    div[data-baseweb="popover"],
+    div[data-baseweb="menu"],
+    ul[role="listbox"],
+    ul[data-baseweb="menu"] {
+        background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #0F172A !important;
+    }
+    li[role="option"],
+    li[data-baseweb="menu-item"] {
+        background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+    }
+    li[role="option"]:hover,
+    li[role="option"][aria-selected="true"],
+    li[data-baseweb="menu-item"]:hover {
+        background-color: #EFF6FF !important;
+        background: #EFF6FF !important;
+        color: #1D4ED8 !important;
+    }
+
+    label[data-testid="stWidgetLabel"],
+    label[data-testid="stWidgetLabel"] p,
+    label[data-testid="stWidgetLabel"] span {
         font-weight: 700 !important;
         color: #1E293B !important;
         font-size: 0.92rem !important;
@@ -1161,7 +1254,7 @@ class handler(BaseHTTPRequestHandler):
             target_path = os.path.join(base_dir, "index.html")
 
         content_type = "text/html; charset=utf-8"
-        if target_path.endswith(".py"):
+        if target_path.endswith(".py") or target_path.endswith(".toml"):
             content_type = "text/plain; charset=utf-8"
         elif target_path.endswith(".css"):
             content_type = "text/css"
@@ -1193,7 +1286,7 @@ def app(environ, start_response):
         target_path = os.path.join(base_dir, "index.html")
 
     content_type = "text/html; charset=utf-8"
-    if target_path.endswith(".py"):
+    if target_path.endswith(".py") or target_path.endswith(".toml"):
         content_type = "text/plain; charset=utf-8"
     elif target_path.endswith(".css"):
         content_type = "text/css"
