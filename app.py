@@ -438,6 +438,37 @@ CUSTOM_CSS = """
         color: #1D4ED8 !important;
     }
 
+    /* Tooltip Icons: Clean subtle icon, never a black dot */
+    [data-testid="stTooltipIcon"],
+    div[data-testid="stTooltipIcon"],
+    div[data-testid="stTooltipIcon"] button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-width: unset !important;
+        width: auto !important;
+        height: auto !important;
+    }
+    [data-testid="stTooltipIcon"] svg,
+    div[data-testid="stTooltipIcon"] svg {
+        fill: #94A3B8 !important;
+        color: #94A3B8 !important;
+        stroke: #94A3B8 !important;
+        width: 16px !important;
+        height: 16px !important;
+    }
+    [data-testid="stTooltipIcon"]:hover svg,
+    div[data-testid="stTooltipIcon"]:hover svg {
+        fill: #2563EB !important;
+        color: #2563EB !important;
+    }
+
     label[data-testid="stWidgetLabel"],
     label[data-testid="stWidgetLabel"] p,
     label[data-testid="stWidgetLabel"] span {
@@ -619,8 +650,7 @@ with st.container(border=True):
             num_subjects = st.selectbox(
                 "Number of Subjects *",
                 options=[3, 4, 5, 6, 7],
-                index=[3, 4, 5, 6, 7].index(st.session_state.num_subjects) if st.session_state.num_subjects in [3, 4, 5, 6, 7] else 2,
-                help="Select how many theory subjects you have in the current semester"
+                index=[3, 4, 5, 6, 7].index(st.session_state.num_subjects) if st.session_state.num_subjects in [3, 4, 5, 6, 7] else 2
             )
             st.session_state.num_subjects = num_subjects
 
@@ -650,8 +680,7 @@ with st.container(border=True):
                     max_value=30.0,
                     value=20.0,
                     step=0.5,
-                    key=f"subj_mid_{i}",
-                    help="Internal continuous assessment score (Maximum 30)"
+                    key=f"subj_mid_{i}"
                 )
             subject_scores.append({
                 "name": sub_name.strip() if sub_name.strip() else f"Subject {i+1}",
@@ -708,10 +737,8 @@ with st.container(border=True):
                 max_value=10.0,
                 value=float(st.session_state.sgpa),
                 step=0.05,
-                format="%.2f",
-                help="Current Semester Grade Point Average on a 10.0 scale"
+                format="%.2f"
             )
-
 
         with col_cgpa:
             cgpa = st.number_input(
@@ -720,8 +747,7 @@ with st.container(border=True):
                 max_value=10.0,
                 value=float(st.session_state.cgpa),
                 step=0.05,
-                format="%.2f",
-                help="Overall Cumulative Grade Point Average across all semesters"
+                format="%.2f"
             )
 
         calc_avg_mid = 0.0
@@ -766,8 +792,7 @@ with st.container(border=True):
             min_value=0.0,
             max_value=100.0,
             value=float(st.session_state.attendance),
-            step=1.0,
-            help="Classroom & laboratory attendance percentage"
+            step=1.0
         )
         att_c_quick = rules.classify_attendance(attendance)
         st.caption(f"Status: **{att_c_quick['status']} Attendance** ({attendance:.1f}%)")
@@ -777,8 +802,7 @@ with st.container(border=True):
         study_performance = st.selectbox(
             "Daily Study Habits *",
             options=rules.PERFORMANCE_LEVELS,
-            index=std_idx,
-            help="Regularity of daily self-study and conceptual revision"
+            index=std_idx
         )
         st.caption(f"Selected routine: **{study_performance}**")
 

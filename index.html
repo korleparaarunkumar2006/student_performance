@@ -127,6 +127,8 @@
       .loader-footer {
         font-size: 0.78rem;
         color: #94A3B8;
+      }
+
       /* Global override for BaseWeb inputs and select controls */
       div[data-baseweb="input"],
       div[data-baseweb="base-input"],
@@ -144,7 +146,6 @@
         color: #0F172A !important;
         -webkit-text-fill-color: #0F172A !important;
       }
-      [data-testid="stNumberInput"] button,
       [data-testid="stNumberInputStepDown"],
       [data-testid="stNumberInputStepUp"] {
         background-color: #F1F5F9 !important;
@@ -152,8 +153,21 @@
         color: #334155 !important;
         border-left: 1px solid #CBD5E1 !important;
       }
-      [data-testid="stNumberInput"] button svg {
+      [data-testid="stNumberInputStepDown"] svg,
+      [data-testid="stNumberInputStepUp"] svg {
         fill: #334155 !important;
+      }
+      /* Prevent any tooltip icon from rendering as a solid black dot */
+      [data-testid="stTooltipIcon"],
+      [data-testid="stTooltipIcon"] button {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+      [data-testid="stTooltipIcon"] svg {
+        fill: #94A3B8 !important;
+        color: #94A3B8 !important;
       }
       div[data-baseweb="select"] span, div[data-baseweb="select"] div {
         color: #0F172A !important;
