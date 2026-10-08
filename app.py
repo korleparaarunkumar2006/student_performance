@@ -69,11 +69,47 @@ CUSTOM_CSS = """
         visibility: hidden !important;
     }
 
+    /* =========================================================================
+       STRICT FORCED LIGHT THEME (Overrides Dark Mode on All Devices & Accounts)
+       ========================================================================= */
+    :root, [data-theme="dark"], [data-theme="light"], body {
+        color-scheme: light !important;
+        --background-color: #F8FAFC !important;
+        --secondary-background-color: #FFFFFF !important;
+        --text-color: #0F172A !important;
+        --primary-color: #1D4ED8 !important;
+    }
+
+    html, body, .stApp, [data-testid="stAppViewContainer"], .main, [data-testid="stHeader"] {
+        background-color: #F8FAFC !important;
+        color: #0F172A !important;
+    }
+
     /* Main Container */
     .block-container {
         padding-top: 1.5rem;
         padding-bottom: 3.5rem;
         max-width: 1120px;
+        background-color: #F8FAFC !important;
+    }
+
+    /* Force all text in labels and markdown to light-theme colors */
+    [data-testid="stWidgetLabel"] p, label, .stMarkdown p, .stMarkdown span {
+        color: #1E293B !important;
+    }
+
+    /* Dropdown popover and menu light background */
+    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[role="listbox"] {
+        background-color: #FFFFFF !important;
+        color: #0F172A !important;
+    }
+    li[role="option"] {
+        background-color: #FFFFFF !important;
+        color: #0F172A !important;
+    }
+    li[role="option"]:hover, li[role="option"][aria-selected="true"] {
+        background-color: #EFF6FF !important;
+        color: #1D4ED8 !important;
     }
 
     /* Header Banner */
