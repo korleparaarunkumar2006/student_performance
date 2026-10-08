@@ -1107,3 +1107,77 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+# ==============================================================================
+# 9. VERCEL SERVERLESS RUNTIME ENTRYPOINTS
+# ==============================================================================
+import os
+from http.server import BaseHTTPRequestHandler
+
+class handler(BaseHTTPRequestHandler):
+    """Vercel BaseHTTPRequestHandler entrypoint."""
+    def do_GET(self):
+        clean_path = self.path.split("?")[0].lstrip("/")
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        target_path = os.path.join(base_dir, clean_path) if clean_path else os.path.join(base_dir, "index.html")
+
+        if not os.path.isfile(target_path):
+            target_path = os.path.join(base_dir, "index.html")
+
+        content_type = "text/html; charset=utf-8"
+        if target_path.endswith(".py"):
+            content_type = "text/plain; charset=utf-8"
+        elif target_path.endswith(".css"):
+            content_type = "text/css"
+        elif target_path.endswith(".js"):
+            content_type = "application/javascript"
+        elif target_path.endswith(".json"):
+            content_type = "application/json"
+
+        try:
+            with open(target_path, "rb") as f:
+                content = f.read()
+            self.send_response(200)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", str(len(content)))
+            self.end_headers()
+            self.wfile.write(content)
+        except Exception:
+            self.send_response(404)
+            self.end_headers()
+
+
+def app(environ, start_response):
+    """Vercel WSGI entrypoint."""
+    path_info = environ.get("PATH_INFO", "/").lstrip("/")
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    target_path = os.path.join(base_dir, path_info) if path_info else os.path.join(base_dir, "index.html")
+
+    if not os.path.isfile(target_path):
+        target_path = os.path.join(base_dir, "index.html")
+
+    content_type = "text/html; charset=utf-8"
+    if target_path.endswith(".py"):
+        content_type = "text/plain; charset=utf-8"
+    elif target_path.endswith(".css"):
+        content_type = "text/css"
+    elif target_path.endswith(".js"):
+        content_type = "application/javascript"
+    elif target_path.endswith(".json"):
+        content_type = "application/json"
+
+    try:
+        with open(target_path, "rb") as f:
+            content = f.read()
+        start_response("200 OK", [
+            ("Content-Type", content_type),
+            ("Content-Length", str(len(content)))
+        ])
+        return [content]
+    except Exception:
+        start_response("404 Not Found", [("Content-Type", "text/plain")])
+        return [b"Not Found"]
+
+
+application = app
+
